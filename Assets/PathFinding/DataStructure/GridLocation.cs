@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AStar
+namespace PathFinding
 {
     public struct GridLocation
     {

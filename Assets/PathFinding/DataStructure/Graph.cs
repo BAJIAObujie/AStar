@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AStar
+namespace PathFinding
 {
     public class Graph
     {
@@ -28,15 +28,15 @@ namespace AStar
             return !walls.Contains(id);
         }
 
-        public List<GridLocation> GetNeighbors(GridLocation id, AStarPathFinding.MoveDirection moveDirection)
+        public List<GridLocation> GetNeighbors(GridLocation id, PathFindingRoot.MoveDirection moveDirection)
         {
-            if (moveDirection == AStar.AStarPathFinding.MoveDirection.FourPlus)
+            if (moveDirection == PathFinding.PathFindingRoot.MoveDirection.FourPlus)
             {
                 return GetNeighborsByFourPlus(id);
             }
             
             List<GridLocation> neighbors = new List<GridLocation>();
-            List<GridLocation> dirs = moveDirection == AStar.AStarPathFinding.MoveDirection.Four ? Direction.FourDir : Direction.EightDir;
+            List<GridLocation> dirs = moveDirection == PathFinding.PathFindingRoot.MoveDirection.Four ? Direction.FourDir : Direction.EightDir;
             foreach (var dir in dirs)
             {
                 int nextX = id.x + dir.x;
@@ -110,18 +110,20 @@ namespace AStar
         }
         
         // 两个不相邻格子的消耗 预测函数
+        // 如果是Dijkstra寻路 那么预测函数直接返回0即可。（当然可以另外写一个函数 让函数更加清晰
+        // 如果是BFS寻路 那么让最后算出来的优先级更高即可
+        // 所以说AStar是两者的结合
         private static int Heuristic(GridLocation from, GridLocation to)
         {
             var deltaX = Math.Abs(to.x - from.x);
             var deltaY = Math.Abs(to.y - from.y);
             return Math.Min(deltaX, deltaY) * 14 + Math.Abs(deltaX - deltaY) * 10;
-            // return Math.Abs(to.x - from.x) + Math.Abs(to.y - from.y);
         }
         
-        public static bool AStarPathFinding(Graph graph, 
+        public static bool AStarSearch(Graph graph, 
             GridLocation start, 
             GridLocation end, 
-            AStarPathFinding.MoveDirection moveDirection,
+            PathFindingRoot.MoveDirection moveDirection,
             int maxStep,
             out Dictionary<GridLocation, GridLocation> cameFrom, 
             out Dictionary<GridLocation, GridInfo> infoMap)
@@ -157,6 +159,7 @@ namespace AStar
                 var current = frontier.Dequeue();
                 var currentLocation = current.GetLocation();
 
+                // 目前是最快查找路径 如果使用查找最短路径则打开下边三行
                 // if (currentLocation == end)
                 // {
                 //     return true;
@@ -193,6 +196,7 @@ namespace AStar
                             Step = step,
                         };
 
+                        // 目前是最快查找路径 如果使用查找最短路径则注释下边三行
                         if (next == end)
                         {
                             return true;
@@ -202,7 +206,7 @@ namespace AStar
             }
             return false;
         }
-        
+
 
     }
 }

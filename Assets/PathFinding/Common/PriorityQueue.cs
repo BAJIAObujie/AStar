@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AStar
+namespace PathFinding
 {
 
     // From https://visualstudiomagazine.com/articles/2012/11/01/priority-queues-with-c.aspx

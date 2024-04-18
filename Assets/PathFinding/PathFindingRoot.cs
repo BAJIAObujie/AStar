@@ -5,9 +5,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AStar
+namespace PathFinding
 {
-    public class AStarPathFinding : MonoBehaviour
+    public class PathFindingRoot : MonoBehaviour
     {
         public GameObject cellRoot;
         public GameObject cellPrefab;
@@ -24,7 +24,7 @@ namespace AStar
         private GridLocation endPos;
         public bool IsDebugMode = false;
         [ShowIf("IsDebugMode")] public int maxStep = 1000;
-        
+
         public MoveDirection moveDirection;
         
         public enum MoveDirection
@@ -77,7 +77,7 @@ namespace AStar
         public void StartPathFinding()
         {
             var step = !IsDebugMode ? Int32.MaxValue : maxStep;
-            if (!Graph.AStarPathFinding(graph, startPos, endPos, moveDirection, step,
+            if (!Graph.AStarSearch(graph, startPos, endPos, moveDirection, step,
                 out var cameFrom, out var infoMap))
             {
                 DrawGraphView(new List<GridLocation>(), infoMap);
@@ -102,7 +102,7 @@ namespace AStar
   
             DrawGraphView(path, infoMap);
         }
-        
+
         #region GraphView
 
         private List<List<GameObject>> cells;

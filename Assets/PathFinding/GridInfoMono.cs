@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AStar
+namespace PathFinding
 {
     public class GridInfoMono : MonoBehaviour
     {

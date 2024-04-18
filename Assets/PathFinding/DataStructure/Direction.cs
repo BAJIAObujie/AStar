@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AStar
+namespace PathFinding
 {
     public static class Direction
     {
